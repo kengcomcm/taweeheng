@@ -28,7 +28,7 @@ import android.widget.EditText;
 public class MainActivity extends ActionBarActivity {
 
 	EditText editTextLoan, editTextInterest, editTextInstallmentAmount, editTextPeriod,editTextAge, editTwInterest,editInstallmentDiscountAmount;
-	Button buttonCalculate, buttonCalInsurance, buttonReset;
+	Button  buttonReset;
 	RadioButton radioYear, radioMonth, radioMale,radioFemale;
 	RadioGroup radioGroup,radioGroupGender;
 	TextView txb3,lbViewRate,lbInsuranceAmount,lbNewInstallmentAmount,lbDiscount;
@@ -45,14 +45,14 @@ public class MainActivity extends ActionBarActivity {
         editTextInstallmentAmount = (EditText) findViewById(R.id.txbInstallmentAmount);
         radioMonth = (RadioButton) findViewById(R.id.rdMonth);
         radioYear = (RadioButton) findViewById(R.id.rdYear);
-        buttonCalculate = (Button) findViewById(R.id.btnCalculate);
+        
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
         txb3 = (TextView) findViewById(R.id.textView3);
         radioGroupGender = (RadioGroup)findViewById(R.id.radioGroup2);
         lbViewRate = (TextView) findViewById(R.id.labelRate);
         lbInsuranceAmount = (TextView) findViewById(R.id.labelInsuranceAmount);
         lbNewInstallmentAmount = (TextView) findViewById(R.id.labelNewInstallmentAmount);
-        buttonCalInsurance = (Button) findViewById(R.id.btnCalInsurance);
+        
         radioMale = (RadioButton)findViewById(R.id.rdMale);
         radioFemale = (RadioButton)findViewById(R.id.rdFemale);
         editTextAge = (EditText) findViewById(R.id.txbAge);
@@ -70,6 +70,8 @@ public class MainActivity extends ActionBarActivity {
         editTextAge.setSelectAllOnFocus(true);
         editTwInterest.setSelectAllOnFocus(true);
         editInstallmentDiscountAmount.setSelectAllOnFocus(true);
+        
+        //
         
         editTextInstallmentAmount.addTextChangedListener(new addListenerOnTextChange(this, editTextInstallmentAmount));
         buttonReset.setOnClickListener(new OnClickListener(){
@@ -99,115 +101,6 @@ public class MainActivity extends ActionBarActivity {
         		
         	}
         });
-        buttonCalculate.setOnClickListener(new OnClickListener(){
-        	
-			public void onClick(View v){
-        		double loan =0;
-        		String l = editTextLoan.getText().toString();
-        		if(l.length() > 0)
-        			loan = Double.valueOf(editTextLoan.getText().toString()).doubleValue();
-        		double interest = 0;
-        		if(editTextInterest.getText().toString().length() > 0)
-        			interest = Double.valueOf(editTextInterest.getText().toString()).doubleValue();
-        		
-        		int period = 0;
-        		if(editTextPeriod.getText().toString().length() > 0)
-        			period=	Integer.valueOf(editTextPeriod.getText().toString()).intValue();
-        		boolean isPerYear = true;
-        		if(radioMonth.isChecked())
-        			isPerYear = false;
-        		double twInterest = 0;
-        		if(editTwInterest.getText().toString().length() > 0)
-        			twInterest = Double.valueOf(editTwInterest.getText().toString()).doubleValue();
-        		boolean isInterestIncludeVat = true;
-        		double installment = 0;
-        		if(loan == 0 || interest == 0 || period == 0)
-        		{
-        			msbox("เตือน","ค่าที่กำหนดไม่ถูกต้อง");
-        		}
-        		else
-        		{
-        			installment = calInstallmentAmount(loan,interest,period,isPerYear,isInterestIncludeVat);
-        			String ints = String.valueOf(installment);
-        			editTextInstallmentAmount.setText(ints);
-        		}
-        		if(checkDiscount.isChecked())
-        		{
-	        		if(loan == 0 || twInterest == 0 || period ==0)
-	        		{
-	        			msbox("เตือน","ไม่สามารถคำนวณค่างวดส่วนลดได้เนื่องจากค่าที่กำหนดไม่ถูกต้อง");
-	        		}
-	        		else
-	        		{
-	        			installment = calInstallmentAmount(loan,twInterest,period,isPerYear,isInterestIncludeVat);
-	        			String ints = String.valueOf(installment);
-	        			editInstallmentDiscountAmount.setText(ints);
-	        		}
-	        		//setDiscount();
-        		}
-        	}
-        }); 
-        
-        buttonCalInsurance.setOnClickListener(new OnClickListener(){
-        	public void onClick(View v){
-        		String gender = "M";
-        		if(radioFemale.isChecked())
-        			gender = "F";
-        		int Age = 0;
-        		if(editTextAge.getText().toString().length() > 0)
-        			Age =Integer.valueOf(editTextAge.getText().toString()).intValue();
-        		boolean isBL = checkBL.isChecked();
-        		double percent = findInsuranceRate(gender, Age, isBL);
-        		double loan =0;
-        		if(editTextLoan.getText().toString().length() > 0)
-        			loan = Double.valueOf(editTextLoan.getText().toString()).doubleValue();
-        		double period = 0;
-        		if(editTextPeriod.getText().toString().length() > 0)
-        			period=	Double.valueOf(editTextPeriod.getText().toString()).intValue();
-        		double interest = 0;
-        		if(txb3.getText().toString().length() > 0)
-        			interest = Double.valueOf(txb3.getText().toString()).doubleValue();
-        		if(percent == 0)
-        			msbox("เตือน","อายุที่ระบุไม่สามารถทำประกันได้");
-        		else if(loan == 0 || interest == 0 || period == 0)
-        		{
-        			msbox("เตือน","ค่าที่กำหนดไม่ถูกต้องกรุณาตรวจสอบ");
-        		}
-        		else
-        		{
-        			double yearperiod = Math.ceil(period / 12);
-        			percent = percent * yearperiod;
-        			
-        			
-                    double premium = 0;
-                    double assetIncludeVatAmount = (loan * 1.07);
-                    
-                    double premiumpercent = (percent / 100);
-                    
-                    premium = (((assetIncludeVatAmount * (interest / 100)) * yearperiod) + assetIncludeVatAmount) * premiumpercent;                    
-                    premium =Math.round(premium);
-                    
-                    
-                    loan = loan +premium;
-                    double newInstallmentAmount =  calInstallmentAmount(loan, interest, Integer.valueOf(editTextPeriod.getText().toString()).intValue(), radioYear.isChecked(), false);
-                    String strInstallment = "";//String.valueOf();
-                    String strPremium = "";
-                    
-                    NumberFormat numberFormat  = new DecimalFormat("#,###,###");
-                    numberFormat = new DecimalFormat("#,###,###");
-                    strInstallment = numberFormat.format(Math.round(newInstallmentAmount));      // -1 234 568
-                    strPremium = numberFormat.format(Math.round(premium));
-            		
-                    NumberFormat formatter = new DecimalFormat("0.00");
-                    String srtPercent = formatter.format(percent);                   
-
-                    
-                    lbViewRate.setText(srtPercent);
-            		lbInsuranceAmount.setText(strPremium);
-            		lbNewInstallmentAmount.setText(strInstallment);
-        		}
-        	}        	
-        }); 
         	
         editInstallmentDiscountAmount.addTextChangedListener(new TextWatcher() {
 			
@@ -233,7 +126,334 @@ public class MainActivity extends ActionBarActivity {
 			
 		});
         	
+        checkDiscount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            	
+            	if(isChecked)
+            	{
+            		double loan =0;
+            		String l = editTextLoan.getText().toString();
+            		if(l.length() > 0)
+            			loan = Double.valueOf(editTextLoan.getText().toString()).doubleValue();
+            		double interest = 0;
+            		if(editTextInterest.getText().toString().length() > 0)
+            			interest = Double.valueOf(editTextInterest.getText().toString()).doubleValue();
+            		
+            		int period = 0;
+            		if(editTextPeriod.getText().toString().length() > 0)
+            			period=	Integer.valueOf(editTextPeriod.getText().toString()).intValue();
+            		boolean isPerYear = true;
+            		if(radioMonth.isChecked())
+            			isPerYear = false;
+            		double twInterest = 0;
+            		if(editTwInterest.getText().toString().length() > 0)
+            			twInterest = Double.valueOf(editTwInterest.getText().toString()).doubleValue();
+            		boolean isInterestIncludeVat = true;
+            		double installment = 0;
+            		if(loan > 0 && twInterest > 0 && period > 0)
+            		{
+	            		installment = calInstallmentAmount(loan,twInterest,period,isPerYear,isInterestIncludeVat);
+	        			String ints = String.valueOf(installment);
+	        			editInstallmentDiscountAmount.setText(ints);
+	            		setDiscount();
+            		}
+            	}
+            	else
+            	{
+            		editTwInterest.setText("");
+            		editInstallmentDiscountAmount.setText("");
+            		lbDiscount.setText("0");
+            	}
+            }
+        });     
+        checkBL.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        	@Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+        		calculateInsurance();
+        	}
+        });
+        editTwInterest.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub	
+				
+				double loan =0;
+        		String l = editTextLoan.getText().toString();
+        		if(l.length() > 0)
+        			loan = Double.valueOf(editTextLoan.getText().toString()).doubleValue();
+        		double interest = 0;
+        		if(editTextInterest.getText().toString().length() > 0)
+        			interest = Double.valueOf(editTextInterest.getText().toString()).doubleValue();
+        		
+        		int period = 0;
+        		if(editTextPeriod.getText().toString().length() > 0)
+        			period=	Integer.valueOf(editTextPeriod.getText().toString()).intValue();
+        		boolean isPerYear = true;
+        		if(radioMonth.isChecked())
+        			isPerYear = false;
+        		double twInterest = 0;
+        		if(editTwInterest.getText().toString().length() > 0)
+        			twInterest = Double.valueOf(editTwInterest.getText().toString()).doubleValue();
+        		boolean isInterestIncludeVat = true;
+        		double installment = 0;
+        		if(loan > 0 && twInterest > 0 && period > 0)
+        		{
+            		installment = calInstallmentAmount(loan,twInterest,period,isPerYear,isInterestIncludeVat);
+        			String ints = String.valueOf(installment);
+        			editInstallmentDiscountAmount.setText(ints);
+            		setDiscount();
+        		}
+			}
+			
+		});
+        editTextLoan.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub	
+				
+				calculateInstallment();
+				calculateInsurance();
+			}
+			
+		});
+        editTextAge.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub	
+				
+				calculateInsurance();
+			}
+			
+		});
+        editTextInterest.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub	
+				
+				calculateInstallment();
+			}
+			
+		});
+        editTextPeriod.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub	
+				
+				calculateInstallment();
+				calculateInsurance();
+			}
+			
+		});
+        radioYear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            	
+            	calculateInstallment();
+            }
+        });  
+        radioMonth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            	
+            	calculateInstallment();
+            }
+        });
         
+        radioMale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            	
+            	calculateInsurance();
+            }
+        });
+        radioFemale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            	
+            	calculateInsurance();
+            }
+        });
+    }
+    
+    public void calculateInstallment()
+    {
+    	double loan =0;
+		String l = editTextLoan.getText().toString();
+		if(l.length() > 0)
+			loan = Double.valueOf(editTextLoan.getText().toString()).doubleValue();
+		double interest = 0;
+		if(editTextInterest.getText().toString().length() > 0)
+			interest = Double.valueOf(editTextInterest.getText().toString()).doubleValue();
+		
+		int period = 0;
+		if(editTextPeriod.getText().toString().length() > 0)
+			period=	Integer.valueOf(editTextPeriod.getText().toString()).intValue();
+		boolean isPerYear = true;
+		if(radioMonth.isChecked())
+			isPerYear = false;
+		double twInterest = 0;
+		if(editTwInterest.getText().toString().length() > 0)
+			twInterest = Double.valueOf(editTwInterest.getText().toString()).doubleValue();
+		boolean isInterestIncludeVat = true;
+		double installment = 0;
+		if(loan > 0 && interest > 0 && period > 0)
+		{
+			installment = calInstallmentAmount(loan,interest,period,isPerYear,isInterestIncludeVat);
+			String ints = String.valueOf(installment);
+			editTextInstallmentAmount.setText(ints);
+		}
+		
+		/*if(checkDiscount.isChecked())
+		{
+    		if(loan == 0 || twInterest == 0 || period ==0)
+    		{
+    			msbox("เตือน","ไม่สามารถคำนวณค่างวดส่วนลดได้เนื่องจากค่าที่กำหนดไม่ถูกต้อง");
+    		}
+    		else
+    		{
+    			installment = calInstallmentAmount(loan,twInterest,period,isPerYear,isInterestIncludeVat);
+    			String ints = String.valueOf(installment);
+    			editInstallmentDiscountAmount.setText(ints);
+    		}
+    		//setDiscount();
+		}*/
+    }
+    
+    public void calculateInsurance(){
+    	String gender = "M";
+		boolean isInterestIncludeVat = false;
+		if(radioFemale.isChecked())
+			gender = "F";
+		int Age = 0;
+		if(editTextAge.getText().toString().length() > 0)
+			Age =Integer.valueOf(editTextAge.getText().toString()).intValue();
+		boolean isBL = checkBL.isChecked();
+		double percent = findInsuranceRate(gender, Age, isBL);
+		double loan =0;
+		if(editTextLoan.getText().toString().length() > 0)
+			loan = Double.valueOf(editTextLoan.getText().toString()).doubleValue();
+		double period = 0;
+		if(editTextPeriod.getText().toString().length() > 0)
+			period=	Double.valueOf(editTextPeriod.getText().toString()).intValue();
+		double interest = 0;
+		if(txb3.getText().toString().length() > 0)
+			interest = Double.valueOf(txb3.getText().toString()).doubleValue();
+		/*if(percent == 0)
+			msbox("เตือน","อายุที่ระบุไม่สามารถทำประกันได้");
+		else*/ if(loan > 0 && interest > 0 && period > 0)
+		{
+			
+			double yearperiod = Math.ceil(period / 12);
+			percent = percent * yearperiod;
+			
+			
+            double premium = 0;
+            double assetIncludeVatAmount = (loan * 1.07);
+            
+            double premiumpercent = (percent / 100);
+            
+            premium = (((assetIncludeVatAmount * (interest / 100)) * yearperiod) + assetIncludeVatAmount) * premiumpercent;                    
+            premium =Math.round(premium);
+            
+            
+            loan = loan +premium;
+            if(radioMonth.isChecked() && editTextInterest.getText().toString().length() > 0)
+            {
+            	interest = Double.valueOf(editTextInterest.getText().toString()).doubleValue();
+            	isInterestIncludeVat = true;
+            }
+            	
+            double newInstallmentAmount =  calInstallmentAmount(loan, interest, Integer.valueOf(editTextPeriod.getText().toString()).intValue(), radioYear.isChecked(), isInterestIncludeVat);
+            String strInstallment = "";//String.valueOf();
+            String strPremium = "";
+            
+            NumberFormat numberFormat  = new DecimalFormat("#,###,###");
+            numberFormat = new DecimalFormat("#,###,###");
+            
+            strPremium = numberFormat.format(Math.round(premium));
+            if(premium == 0)
+            	newInstallmentAmount = 0;
+            strInstallment = numberFormat.format(Math.round(newInstallmentAmount));      // -1 234 568
+    		
+            NumberFormat formatter = new DecimalFormat("0.00");
+            String srtPercent = formatter.format(percent);                   
+
+            
+            lbViewRate.setText(srtPercent);
+    		lbInsuranceAmount.setText(strPremium);
+    		lbNewInstallmentAmount.setText(strInstallment);
+		}
     }
     
     public void setDiscount()
@@ -287,6 +507,7 @@ public class MainActivity extends ActionBarActivity {
         		String x = ints.substring(0,dot+3);
         		txb3.setText(x);
         		setDiscount();
+        		calculateInsurance();
     		}
     		
     	}
@@ -402,7 +623,8 @@ public class MainActivity extends ActionBarActivity {
     	double percent = 0;
         if (isBL)
         {
-            percent = 0.27;
+        	if (Age >= 16 && Age <= 65)
+        		percent = 0.27;
         }
         else
         {

@@ -13,28 +13,31 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
     tools:context="com.tw.tw_calculate.MainActivity" >
 
     <LinearLayout
         android:id="@+id/linearLayoutMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="6"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:scrollbars="vertical" >
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:text="ยอดจัด"
-                android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+                
+                 />
 
             <EditText
                 android:id="@+id/txbLoan"
@@ -43,7 +46,9 @@
                 android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+                android:textSize="@dimen/abc_action_bar_subtitle_text_size"
+                
+                 />
 
             <Button
                 android:id="@+id/btnReset"
@@ -58,8 +63,8 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/TextView01"
@@ -110,8 +115,8 @@
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/textView2"
@@ -121,20 +126,25 @@
 
             <EditText
                 android:id="@+id/txbInstallmentPeriod"
-                android:layout_width="100dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:inputType="number"
                 android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
+			<TextView
+                android:id="@+id/textViewX"
+                android:layout_width="match_parent"                
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="งวด" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/TextView03"
@@ -156,6 +166,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="0" />
             
             <TextView
@@ -164,37 +175,26 @@
                 android:layout_height="wrap_content"
                 android:text="%" />
 
-            <Button
-                android:id="@+id/btnCalculate"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_height="34dp"
-                android:text="คำนวณ" />
-
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
-            android:layout_height="34dp"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <CheckBox
                 android:id="@+id/checkDiscount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="มีส่วนลด" />
-        </LinearLayout>
-		<LinearLayout
-    		android:id="@+id/linearLayout5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+                android:text="ส่วนลด" />
 
             <TextView
                 android:id="@+id/TextView06"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:text="ดอกเบี้ยทวีเฮง" />
 
             <EditText
@@ -204,39 +204,35 @@
                 android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-            
-            <TextView
+                android:textSize="@dimen/abc_action_bar_subtitle_text_size" >
+
+                <requestFocus />
+            </EditText>
+       		<TextView
                 android:id="@+id/TextView07"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="% ส่วนลด" />
-
-            <TextView
-                android:id="@+id/labelDiscountAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical"
-                android:text="0" />
+                android:text="%" />
             
+
         </LinearLayout>
+		
         <LinearLayout
             android:id="@+id/linearLayout6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/TextView100"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ค่างวดส่วนลด" />
 
             <EditText
                 android:id="@+id/txbInstallmentDiscountAmount"
-                android:layout_width="100dp"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
@@ -245,15 +241,26 @@
                 android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
 
             <TextView
-                android:id="@+id/textView100"
+                android:id="@+id/TextViewZ"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="ส่วนลด" />
+
+            <TextView
+                android:id="@+id/labelDiscountAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="0" />
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/linearLayout7"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <CheckBox
                 android:id="@+id/checkBL"
@@ -264,13 +271,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout8"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="50dp"
+                android:layout_width="30dp"
                 android:layout_height="36dp"
                 android:gravity="center_vertical"
                 android:text="เพศ" />
@@ -279,7 +287,6 @@
                 android:id="@+id/radioGroup2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:orientation="horizontal" >
 
                 <RadioButton
@@ -288,28 +295,19 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="ชาย"
-                    android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
+                     />
                 <RadioButton
                     android:id="@+id/rdFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="หญิง"
-                    android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
+                    />
             </RadioGroup>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
-
-            <TextView
+			<TextView
                 android:id="@+id/TextView04"
-                android:layout_width="50dp"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="อายุ" />
 
             <EditText
@@ -320,20 +318,22 @@
                 android:inputType="number"
                 android:layout_marginLeft="10dp"
                 android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
-            <Button
-                android:id="@+id/btnCalInsurance"
-                android:layout_width="wrap_content"
+            
+			<TextView
+                android:id="@+id/TextViewY"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_height="34dp"
-                android:text="คำนวณประกัน" />
-
+                android:text="ปี" />
         </LinearLayout>
 
+       
+
         <LinearLayout
+            android:id="@+id/linearLayout9"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/TextView05"
@@ -353,9 +353,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout10"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6" >
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/textView5"
@@ -375,9 +376,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout11"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"            
-            android:layout_weight="6" >
+            android:layout_height="match_parent"           
+            android:layout_weight="1" >
 
             <TextView
                 android:id="@+id/textView6"
